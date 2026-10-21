@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>답장템 링크 모음</title><meta name="robots" content="noindex">
+<meta name="theme-color" content="#161b2b">
+<script>
+/* ▼ 새 에피소드 = 맨 위에 한 줄 추가 (최신순 정렬은 배열 순서 그대로) ▼ */
+const LINKS = [
+{ep:"T1", name:"광천김 아몬드 김자반 40g×10봉", verdict:"담이 급보: 하루특가 8,660원, 오늘 자정까지", platform:"토스쇼핑", url:"https://toss.shopping/_m/RT0jha8c", expires:"2026-10-23T00:00:00+09:00"},
+{ep:"EP3", name:"코멧 배수구 거름망 500개", verdict:"장바구니 숙성 5일, 결국 대용량이 답", platform:"쿠팡", url:"https://link.coupang.com/a/h2dYZRdogC"},
+{ep:"EP2", name:"프릴 베이킹소다 레몬향 주방세제 700ml", verdict:"장바구니 숙성 3일, 기름기 설거지용으로 무난", platform:"쿠팡", url:"https://link.coupang.com/a/h2dXhCJpD2"},
+];
+const PRICE_NOTE = "2026.10.22 기준, 변동 가능";
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#161b2b;color:#eef1f6;font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:480px;margin:0 auto;padding:14px 16px 40px}
+.disc{background:#232a3c;border-radius:12px;padding:10px 12px;font-size:12.5px;color:#c9cfdb;margin-bottom:16px}
+.disc p+p{margin-top:4px}.disc b{color:#7fd8bd}
+header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+header img{width:68px;height:68px;border-radius:50%;border:3px solid #7fd8bd;object-fit:cover}
+h1{font-size:26px;font-weight:800}
+.tag{color:#a9b1c2;font-size:14.5px}
+.pill{background:#1f4a3f;color:#e6fff6;border-radius:22px;padding:11px 16px;text-align:center;font-weight:700;margin-bottom:12px}
+.search{display:flex;gap:8px;margin-bottom:18px}
+.search input{flex:1;background:#232a3c;border:1.5px solid #34405a;color:#fff;border-radius:14px;padding:11px 14px;font:inherit;font-size:16px}
+.search input:focus{outline:none;border-color:#7fd8bd}
+.card{background:#202739;border-radius:20px 20px 20px 6px;padding:16px;margin-bottom:14px;scroll-margin-top:12px}
+.card.hit{box-shadow:0 0 0 3px #7fd8bd}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ep{font-size:34px;font-weight:900;color:#7fd8bd;letter-spacing:-1px}
+.plat{font-size:13px;font-weight:700;border-radius:999px;padding:4px 10px;background:#2c3550;color:#cfd6e6}
+.plat.toss{background:#1c3a6b;color:#cfe1ff}.plat.cp{background:#4a2330;color:#ffd2d9}
+.name{font-size:19px;font-weight:800;margin-bottom:8px}
+.verdict{display:inline-block;background:#7fd8bd;color:#10261f;font-weight:700;border-radius:16px 16px 16px 4px;padding:8px 12px;margin-bottom:8px}
+.note{font-size:12.5px;color:#8f98ab;margin-bottom:12px}
+.btn{display:block;text-align:center;background:#7fd8bd;color:#0f2a22;font-weight:800;font-size:18px;border-radius:16px;padding:15px;text-decoration:none}
+.btn:active{transform:scale(.98)}
+.card.ended .btn{background:#3a4256;color:#9aa3b5;pointer-events:none}
+.badge{display:none;color:#ff8a7a;font-weight:800;font-size:14px;margin-left:6px}
+.card.ended .badge{display:inline}
+.empty{color:#8f98ab;text-align:center;padding:20px;display:none}
+footer{color:#6f7890;font-size:12px;text-align:center;margin-top:20px}
+</style></head><body><div class="wrap">
+<div class="disc">
+<p>이 페이지는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
+<p>이 콘텐츠는 토스쇼핑 쉐어링크 활동의 일환으로, 링크를 통한 구매가 발생하면 일정 수수료를 지급받습니다.</p>
+<p><b>[광고] 가상인물(담이) 포함</b></p>
+</div>
+<header><img src="assets/profile.jpg" alt="답장템 프로필" width="68" height="68">
+<div><h1>답장템</h1><div class="tag">후기 읽기 귀찮을 때, 담이가 대신 정리해줌</div></div></header>
+<div class="pill">영상에서 본 번호를 찾아 눌러줘 👇</div>
+<div class="search"><input id="q" type="search" inputmode="search" placeholder="번호·상품명 검색 (예: 3)" aria-label="에피소드 번호 검색"></div>
+<main id="list"></main><p class="empty" id="empty">해당 번호가 없어요 🥲</p>
+<footer>© 답장템 (dapjangtem) · 가격·재고는 판매처 기준</footer>
+</div>
+<script>
+const list=document.getElementById('list'),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+list.innerHTML=LINKS.map(l=>{const cls=/토스/.test(l.platform)?'toss':/쿠팡/.test(l.platform)?'cp':'';
+return `<article class="card" id="${esc(l.ep)}" data-ep="${esc(l.ep)}" data-text="${esc((l.ep+' '+l.name).toLowerCase())}"${l.expires?` data-expires="${esc(l.expires)}"`:''}>
+<div class="top"><span class="ep">${esc(l.ep)}<span class="badge">특가 종료</span></span><span class="plat ${cls}">${esc(l.platform)}</span></div>
+<h2 class="name">${esc(l.name)}</h2><div class="verdict">${esc(l.verdict)}</div>
+<p class="note">${esc(l.note||PRICE_NOTE)}</p>
+<a class="btn" href="${esc(l.url)}" target="_blank" rel="sponsored noopener">${esc(l.platform)}에서 보기 →</a></article>`}).join('');
+function checkExpiry(){const now=Date.now();document.querySelectorAll('[data-expires]').forEach(c=>{if(now>=Date.parse(c.dataset.expires)){c.classList.add('ended');c.querySelector('.btn').textContent='특가 종료';c.querySelector('.btn').removeAttribute('href');}});}
+checkExpiry();setInterval(checkExpiry,60000);
+const q=document.getElementById('q');
+q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase(),num=v.replace(/^(ep|t)?\s*/,'');let n=0;
+document.querySelectorAll('.card').forEach(c=>{const ep=c.dataset.ep.toLowerCase(),epn=ep.replace(/^(ep|t)/,'');
+const ok=!v||ep===v||(/^\d+$/.test(num)&&epn===num)||c.dataset.text.includes(v);c.style.display=ok?'':'none';c.classList.toggle('hit',!!v&&ok);if(ok)n++;});
+document.getElementById('empty').style.display=n?'none':'block';});
+if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));t&&t.scrollIntoView();}
+</script></body></html>
