@@ -73,4 +73,32 @@ document.querySelectorAll('.card').forEach(c=>{const ep=c.dataset.ep.toLowerCase
 const ok=!v||ep===v||(/^\d+$/.test(num)&&epn===num)||c.dataset.text.includes(v);c.style.display=ok?'':'none';c.classList.toggle('hit',!!v&&ok);if(ok)n++;});
 document.getElementById('empty').style.display=n?'none':'block';});
 if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));t&&t.scrollIntoView();}
+/* Counts only. No cookies, no personal data, and a dead counter must not affect the page.
+   GET /hit is required: POST (sendBeacon) is redirected and does not increment. */
+const hit=key=>{try{fetch('https://abacus.jasoncameron.dev/hit/dapjangtem/'+key,{keepalive:true,cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'}).catch(()=>{});}catch(e){}};
+hit('visits');
+function countClick(e){
+  try{
+    if(e.type==='auxclick'&&e.button!==1)return;
+    const t=e.target;
+    if(!t||!t.closest)return;
+    const a=t.closest('a.btn');
+    if(!a||!a.hasAttribute('href'))return;
+    const ep=(a.closest('.card')?.dataset.ep||'').toLowerCase();
+    const key='click-'+ep;
+    if(ep&&/^[a-z0-9_.-]{3,64}$/.test(key))hit(key);
+  }catch(err){}
+}
+list.addEventListener('click',countClick);
+list.addEventListener('auxclick',countClick);
+let searchAt=0;
+const hitSearch=()=>{
+  if(!q.value.trim())return;
+  const now=Date.now();
+  if(now-searchAt<100)return;
+  searchAt=now;
+  hit('search');
+};
+q.addEventListener('keydown',e=>{if(e.key==='Enter')hitSearch();});
+q.addEventListener('search',hitSearch);
 </script></body></html>
